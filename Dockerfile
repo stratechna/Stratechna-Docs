@@ -10,13 +10,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends brotli curl && 
 RUN curl -sL https://github.com/tesseract-ocr/tessdata/raw/main/por.traineddata \
     -o /usr/share/tesseract-ocr/5/tessdata/por.traineddata
 
-# Branding — copiar ficheiros estáticos
+# Branding — copiar ficheiros estáticos (src — para collectstatic)
 COPY branding/logo_horizontal.png        /usr/src/paperless/src/documents/static/custom/logo.png
 COPY branding/logo_vertical.png          /usr/src/paperless/src/documents/static/custom/logo_vertical.png
 COPY branding/favicon.png                /usr/src/paperless/src/documents/static/custom/favicon.png
 COPY branding/login_logo.png             /usr/src/paperless/src/documents/static/custom/login_logo.png
 COPY branding/stratechna-vault-icon.png  /usr/src/paperless/src/documents/static/custom/stratechna-vault-icon.png
 COPY branding/custom.css                 /tmp/custom.css
+
+# Branding — copiar também para static/ (destino do collectstatic — garante persistência)
+COPY branding/logo_horizontal.png        /usr/src/paperless/static/custom/logo.png
+COPY branding/login_logo.png             /usr/src/paperless/static/custom/login_logo.png
+COPY branding/favicon.png                /usr/src/paperless/static/custom/favicon.png
+COPY branding/logo_vertical.png          /usr/src/paperless/static/custom/logo_vertical.png
+COPY branding/stratechna-vault-icon.png  /usr/src/paperless/static/custom/stratechna-vault-icon.png
 
 # Branding — substituir "Paperless-ngx" por "Stratechna Docs" nos ficheiros JS
 RUN for lang_dir in /usr/src/paperless/src/documents/static/frontend/*/; do \
