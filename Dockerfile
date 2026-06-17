@@ -18,35 +18,16 @@ COPY branding/login_logo.png             /usr/src/paperless/src/documents/static
 COPY branding/stratechna-vault-icon.png  /usr/src/paperless/src/documents/static/custom/stratechna-vault-icon.png
 COPY branding/custom.css                 /tmp/custom.css
 
-# Branding — substituir "Paperless-ngx" por "Stratechna Vault" nos ficheiros JS
+# Branding — substituir "Paperless-ngx" por "Stratechna Docs" nos ficheiros JS
 RUN for lang_dir in /usr/src/paperless/src/documents/static/frontend/*/; do \
       if [ -f "${lang_dir}main.js" ]; then \
-        sed -i 's/Paperless-ngx/Stratechna Vault/g' "${lang_dir}main.js"; \
+        sed -i 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}main.js"; \
+        sed -i 's/Stratechna Vault/Stratechna Docs/g' "${lang_dir}main.js"; \
       fi; \
     done
 
 # Branding — template de login
 RUN sed -i 's/by Paperless-ngx/by Stratechna/g' \
+    /usr/src/paperless/src/documents/templates/paperless-ngx/base.html && \
+    sed -i 's/Stratechna Vault/Stratechna Docs/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html
-
-# Branding — injectar custom.css nos styles.css de cada lingua
-RUN for lang_dir in /usr/src/paperless/src/documents/static/frontend/*/; do \
-      if [ -f "${lang_dir}styles.css" ]; then \
-        cat /tmp/custom.css "${lang_dir}styles.css" > /tmp/styles_branded.css && \
-        mv /tmp/styles_branded.css "${lang_dir}styles.css" && \
-        gzip -k -9 -f "${lang_dir}styles.css" && \
-        brotli -f "${lang_dir}styles.css" -o "${lang_dir}styles.css.br"; \
-      fi; \
-    done
-
-# Collectstatic
-RUN cd /usr/src/paperless/src && \
-    python manage.py collectstatic --noinput --clear 2>/dev/null || true
-
-RUN chmod -R 644 /usr/src/paperless/src/documents/static/custom/ && \
-    chmod 755 /usr/src/paperless/src/documents/static/custom/
-
-USER paperless
-
-# NOTA: O branding da pagina de login (base.css, logo, favicon) e feito via
-# volumes montados em runtime — ver template/docker-compose.yml
