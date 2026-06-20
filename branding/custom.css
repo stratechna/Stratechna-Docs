@@ -1,6 +1,7 @@
 /*
- * Stratechna Vault - Branding Custom CSS
- * Versao final - Marco 2026
+ * Stratechna Docs — Branding Custom CSS
+ * Versão 2.0 — Junho 2026
+ * Correcções: contraste metadados, barra documentos, flash verde
  */
 
 :root, [data-bs-theme=auto], [data-bs-theme=dark] {
@@ -13,49 +14,117 @@
   --bs-link-hover-color: #3D5163;
 }
 
+/* Base */
 body { background-color: #111314 !important; color: #E0E0E0 !important; }
 nav.navbar, .navbar { background-color: #111314 !important; border-bottom: 2px solid #3D5163 !important; }
 
-/* SVG Paperless - invisivel mas mantém estrutura para o JS substituir */
+/* SVG Paperless - invisível mas mantém estrutura para o JS substituir */
 a.navbar-brand svg { opacity: 0 !important; width: 1px !important; overflow: hidden !important; }
 
+/* Sidebar */
 .list-group-item { background-color: transparent !important; color: #E0E0E0 !important; border-color: #2A3A4A !important; }
 .list-group-item:hover { background-color: rgba(61,81,99,0.3) !important; color: #ffffff !important; }
 .list-group-item.active { background-color: #3D5163 !important; border-color: #3D5163 !important; color: #ffffff !important; }
 .sidebar a.nav-link, .sidebar .nav-link { color: #E0E0E0 !important; }
 
+/* Botões */
 .btn-primary, .btn.btn-primary, button.btn-primary { background-color: #3D5163 !important; border-color: #3D5163 !important; color: #ffffff !important; }
 .btn-primary:hover { background-color: #2a3a47 !important; }
 .btn-outline-primary { color: #7B93A8 !important; border-color: #7B93A8 !important; }
 .btn-outline-primary:hover { background-color: #3D5163 !important; color: #ffffff !important; }
-
 pngx-upload-file-widget button, pngx-upload-file-widget .btn, pngx-upload-file-widget span { color: #7B93A8 !important; border-color: #7B93A8 !important; }
 
+/* Links */
 .text-primary, .text-success, a.text-primary, a.text-success { color: #7B93A8 !important; }
 a { color: #7B93A8 !important; }
 a:hover { color: #4E6D8C !important; }
 
+/* Cards */
 .card { background-color: #1a1d1f !important; border-color: #2A3A4A !important; }
 .form-control:focus { border-color: #3D5163 !important; box-shadow: 0 0 0 0.2rem rgba(61,81,99,0.35) !important; }
 
+/* Tabelas */
 .table { color: #E0E0E0 !important; }
 .table thead th { background-color: #2a3a47 !important; color: #ffffff !important; border-color: #3D5163 !important; }
 .table td, .table th { border-color: #2A3A4A !important; }
 
+/* Dropdown */
 .dropdown-menu { background-color: #1a1d1f !important; border-color: #2A3A4A !important; }
 .dropdown-item { color: #E0E0E0 !important; }
 .dropdown-item:hover { background-color: rgba(61,81,99,0.3) !important; color: #ffffff !important; }
 
+/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #111314; }
 ::-webkit-scrollbar-thumb { background: #2a3a47; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #3D5163; }
 
+/* Logo */
 pngx-logo img { content: url('/static/custom/logo.png') !important; max-height: 55px; width: auto; }
 .byline { display: none !important; }
 
+/* Alertas */
 .alert-success { background-color: #1a1d1f !important; border-left: 3px solid #3D5163 !important; color: #E0E0E0 !important; }
 .alert-success *, .alert-success p, .alert-success h5 { color: #E0E0E0 !important; }
 .alert-success a { color: #7B93A8 !important; }
 
+/* Badges */
 .badge.bg-primary, .badge.bg-success { background-color: #3D5163 !important; }
+
+/* === CORRECÇÕES === */
+
+/* 1. Metadados — contraste dos labels e valores */
+pngx-document-metadata .row > div,
+pngx-document-metadata label,
+pngx-document-metadata span,
+pngx-document-metadata p,
+pngx-document-metadata dt,
+pngx-document-metadata dd,
+pngx-document-metadata .text-muted,
+.metadata-tab label,
+.metadata-tab span,
+.metadata-tab .text-muted { color: #C8D0D8 !important; }
+
+pngx-document-metadata .fw-bold,
+pngx-document-metadata strong { color: #ffffff !important; }
+
+/* 2. Barra documentos — forçar fundo escuro */
+pngx-document-list .card,
+pngx-document-list .list-group,
+pngx-document-list .list-group-item,
+pngx-documents-filter-editor,
+.document-list,
+.document-card,
+pngx-filter-editor { background-color: #111314 !important; color: #E0E0E0 !important; }
+
+pngx-document-list .card-body,
+pngx-document-card .card,
+pngx-document-card .card-body { background-color: #1a1d1f !important; color: #E0E0E0 !important; border-color: #2A3A4A !important; }
+
+/* Títulos dos documentos na lista */
+pngx-document-card .card-title,
+pngx-document-card h5,
+pngx-document-list h5 { color: #ffffff !important; }
+
+/* Toolbar/barra de acções documentos */
+.toolbar, .document-toolbar,
+pngx-document-list .navbar,
+pngx-document-list nav { background-color: #1a1d1f !important; border-color: #2A3A4A !important; }
+
+/* 3. Suprimir flash verde do arranque (splash screen Paperless) */
+.loading-screen,
+.splash-screen,
+[class*="loading"],
+[class*="splash"] { background-color: #111314 !important; color: #E0E0E0 !important; }
+
+/* 4. Link documentação — esconder (substituído por redirect) */
+a[href*="paperless-ngx.readthedocs"],
+a[href*="docs.paperless-ngx"] { display: none !important; }
+
+/* Inputs com fundo escuro */
+.form-control, input, select, textarea { background-color: #1a1d1f !important; color: #E0E0E0 !important; border-color: #2A3A4A !important; }
+select option { background-color: #1a1d1f !important; color: #E0E0E0 !important; }
+
+/* Separadores e bordas */
+hr { border-color: #2A3A4A !important; }
+.border { border-color: #2A3A4A !important; }
