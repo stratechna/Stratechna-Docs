@@ -33,19 +33,19 @@ RUN for lang_dir in /usr/src/paperless/src/documents/static/frontend/*/; do \
         sed -i 's|https://docs.paperless-ngx.com|https://stratechna.com|g' "${lang_dir}main.js"; \
         sed -i 's|https://paperless-ngx.readthedocs.io|https://stratechna.com|g' "${lang_dir}main.js"; \
       fi; \
+      if [ -f "${lang_dir}index.html" ]; then \
+        sed -i 's/<title>Paperless-ngx<\/title>/<title>Stratechna Docs<\/title>/g' "${lang_dir}index.html"; \
+        sed -i 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}index.html"; \
+        sed -i 's/Stratechna Vault/Stratechna Docs/g' "${lang_dir}index.html"; \
+        sed -i 's/theme-color" content="#17541f"/theme-color" content="#111314"/g' "${lang_dir}index.html"; \
+        sed -i 's/theme-color" content="#1a[0-9a-f]*/theme-color" content="#111314"/g' "${lang_dir}index.html"; \
+      fi; \
     done
 
 # Branding — template de login
 RUN sed -i 's/by Paperless-ngx/by Stratechna/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html && \
     sed -i 's/Stratechna Vault/Stratechna Docs/g' \
+    /usr/src/paperless/src/documents/templates/paperless-ngx/base.html && \
+    sed -i 's/Paperless-ngx/Stratechna Docs/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html
-
-# Suprimir flash verde do splash screen (substituir cor de fundo)
-RUN sed -i 's/background-color:#1aff00/background-color:#111314/g' \
-    /usr/src/paperless/src/documents/static/frontend/en-US/main.js 2>/dev/null || true && \
-    for lang_dir in /usr/src/paperless/src/documents/static/frontend/*/; do \
-      if [ -f "${lang_dir}main.js" ]; then \
-        sed -i 's/background:#[0-9a-fA-F]*green[^;]*/background:#111314/g' "${lang_dir}main.js" 2>/dev/null || true; \
-      fi; \
-    done
