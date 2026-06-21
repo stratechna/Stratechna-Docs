@@ -80,3 +80,4 @@ pngx-logo img {
   background-color: #880000 !important;
   border-color: #880000 !important;
 }
+.search-container input:focus,.search-container input:focus-visible,.search-container input:active{color:#e0e0e0!important;-webkit-text-fill-color:#e0e0e0!important}
