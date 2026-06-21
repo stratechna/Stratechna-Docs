@@ -3,7 +3,7 @@ FROM ghcr.io/paperless-ngx/paperless-ngx:latest
 USER root
 
 # Instalar dependências
-RUN apt-get update && apt-get install -y --no-install-recommends brotli curl && \
+RUN apt-get update && apt-get install -y --no-install-recommends brotli curl perl && \
     rm -rf /var/lib/apt/lists/*
 
 # OCR Português — tessdata (fallback se volume nao estiver montado)
@@ -28,29 +28,29 @@ COPY branding/favicon.png                /usr/src/paperless/static/custom/favico
 COPY branding/logo_vertical.png          /usr/src/paperless/static/custom/logo_vertical.png
 COPY branding/stratechna-vault-icon.png  /usr/src/paperless/static/custom/stratechna-vault-icon.png
 
-# Branding — patch global em src/ e static/ (ambos os caminhos)
+# Branding — patch com perl (suporta linhas longas) em src/ e static/
 RUN for base_dir in \
       /usr/src/paperless/src/documents/static/frontend \
       /usr/src/paperless/static/frontend; do \
       for lang_dir in ${base_dir}/*/; do \
         if [ -f "${lang_dir}main.js" ]; then \
-          sed -i 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}main.js"; \
-          sed -i 's/Stratechna Vault/Stratechna Docs/g' "${lang_dir}main.js"; \
-          sed -i 's|https://docs.paperless-ngx.com|https://stratechna.com|g' "${lang_dir}main.js"; \
-          sed -i 's|https://paperless-ngx.readthedocs.io|https://stratechna.com|g' "${lang_dir}main.js"; \
+          perl -i -pe 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}main.js"; \
+          perl -i -pe 's/Stratechna Vault/Stratechna Docs/g' "${lang_dir}main.js"; \
+          perl -i -pe 's|https://docs\.paperless-ngx\.com|https://stratechna.com|g' "${lang_dir}main.js"; \
+          perl -i -pe 's|https://paperless-ngx\.readthedocs\.io|https://stratechna.com|g' "${lang_dir}main.js"; \
         fi; \
         if [ -f "${lang_dir}index.html" ]; then \
-          sed -i 's/<title>Paperless-ngx<\/title>/<title>Stratechna Docs<\/title>/g' "${lang_dir}index.html"; \
-          sed -i 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}index.html"; \
-          sed -i 's/theme-color" content="#17541f"/theme-color" content="#111314"/g' "${lang_dir}index.html"; \
+          perl -i -pe 's/<title>Paperless-ngx<\/title>/<title>Stratechna Docs<\/title>/g' "${lang_dir}index.html"; \
+          perl -i -pe 's/Paperless-ngx/Stratechna Docs/g' "${lang_dir}index.html"; \
+          perl -i -pe 's/theme-color" content="#17541f"/theme-color" content="#111314"/g' "${lang_dir}index.html"; \
         fi; \
       done; \
     done
 
 # Branding — template de login
-RUN sed -i 's/by Paperless-ngx/by Stratechna/g' \
+RUN perl -i -pe 's/by Paperless-ngx/by Stratechna/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html && \
-    sed -i 's/Paperless-ngx/Stratechna Docs/g' \
+    perl -i -pe 's/Paperless-ngx/Stratechna Docs/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html && \
-    sed -i 's/Stratechna Vault/Stratechna Docs/g' \
+    perl -i -pe 's/Stratechna Vault/Stratechna Docs/g' \
     /usr/src/paperless/src/documents/templates/paperless-ngx/base.html
