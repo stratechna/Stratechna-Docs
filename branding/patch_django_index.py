@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Injecta JS de branding nos index.html de todas as linguas (static/)"""
-import os
+"""Patch ao template Django index.html principal"""
 
 SCRIPT = """<script>
 (function(){
@@ -27,13 +26,16 @@ SCRIPT = """<script>
 })();
 </script>"""
 
-base = "/usr/src/paperless/static/frontend"
-for lang in os.listdir(base):
-    f = os.path.join(base, lang, "index.html")
-    if os.path.exists(f):
-        content = open(f).read()
+for path in [
+    "/usr/src/paperless/src/documents/templates/index.html",
+]:
+    try:
+        content = open(path).read()
         if "docs-logo" not in content:
             content = content.replace("</body>", SCRIPT + "</body>")
-            open(f, "w").write(content)
-            print(f"Patched: {f}")
-print("Done")
+            open(path, "w").write(content)
+            print(f"Patched: {path}")
+        else:
+            print(f"Already patched: {path}")
+    except Exception as e:
+        print(f"Error {path}: {e}")
