@@ -26,6 +26,8 @@ COPY branding/login_logo.png            /usr/src/paperless/static/custom/login_l
 COPY branding/favicon.png               /usr/src/paperless/static/custom/favicon.png
 COPY branding/logo_vertical.png         /usr/src/paperless/static/custom/logo_vertical.png
 COPY branding/stratechna-vault-icon.png /usr/src/paperless/static/custom/stratechna-vault-icon.png
+COPY branding/docs_logo.png             /usr/src/paperless/src/documents/static/custom/docs_logo.png
+COPY branding/docs_logo.png             /usr/src/paperless/static/custom/docs_logo.png
 
 # Branding — patch JS com perl (suporta linhas longas minificadas) em src/ e static/
 RUN for base_dir in \
