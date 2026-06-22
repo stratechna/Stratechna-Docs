@@ -28,6 +28,14 @@ content = content.replace(
     '.app-loader svg, .app-loader h6 {\nopacity: 0.1;\ncolor: #e0e0e0 !important;'
 )
 
+
+# Injectar link ao CSS de overrides no <head>
+if 'stratechna_overrides' not in content:
+    content = content.replace(
+        '</head>',
+        '<link rel="stylesheet" href="/static/custom/stratechna_overrides.css"></head>'
+    )
+
 with open(FILE, "w") as f:
     f.write(content)
 

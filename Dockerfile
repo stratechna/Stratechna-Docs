@@ -29,6 +29,10 @@ COPY branding/stratechna-vault-icon.png /usr/src/paperless/static/custom/stratec
 COPY branding/docs_logo.png             /usr/src/paperless/src/documents/static/custom/docs_logo.png
 COPY branding/docs_logo.png             /usr/src/paperless/static/custom/docs_logo.png
 
+# Branding — overrides CSS (navbar, cores)
+COPY branding/stratechna_overrides.css /usr/src/paperless/src/documents/static/custom/stratechna_overrides.css
+COPY branding/stratechna_overrides.css /usr/src/paperless/static/custom/stratechna_overrides.css
+
 # Branding — patch JS com perl (suporta linhas longas minificadas) em src/ e static/
 RUN for base_dir in \
       /usr/src/paperless/src/documents/static/frontend \

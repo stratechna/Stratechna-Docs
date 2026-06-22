@@ -1,0 +1,54 @@
+/* Stratechna Docs — Overrides de branding */
+
+/* Cores primarias */
+:root {
+  --pngx-primary: 0, 100%;
+  --pngx-primary-lightness: 27%;
+}
+
+/* Navbar */
+.navbar { background-color: #111314 !important; }
+.navbar *,
+.navbar-brand,
+.navbar a,
+.navbar button,
+.navbar span,
+.navbar .btn,
+.navbar .dropdown > .btn { color: #ffffff !important; }
+.navbar-brand svg { display: none !important; }
+
+/* Search input */
+.search-container input,
+.search-container input:focus,
+.search-container ::placeholder,
+[data-bs-theme=dark] .search-container input,
+[data-bs-theme=dark] .search-container input:focus,
+[data-bs-theme=dark] .search-container ::placeholder {
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+
+/* Cor primaria vermelha Stratechna */
+.btn-primary,
+.bg-primary,
+.page-item.active .page-link {
+  background-color: #880000 !important;
+  border-color: #880000 !important;
+}
+.text-primary,
+.btn-outline-primary,
+.nav-tabs .nav-link { color: #880000 !important; }
+
+/* Alert primary */
+.alert-primary {
+  --bs-alert-bg: #4a0000 !important;
+  --bs-alert-border-color: #6b0000 !important;
+  --bs-alert-color: #ffffff !important;
+}
+
+/* Remover link paperless-ngx */
+a[href*="github.com/paperless-ngx"] { display: none !important; }
+a[href*="docs.paperless-ngx.com"] { display: none !important; }
+
+/* Labels */
+label, .form-label, .col-form-label { color: #c8d0d8 !important; }
