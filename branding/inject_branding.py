@@ -1,39 +1,40 @@
 #!/usr/bin/env python3
-"""Injecta JS de branding nos index.html de todas as linguas (static/)"""
+"""
+inject_branding.py
+Patcha os index.html do Angular (static/frontend) com fixes de cor.
+O logo da navbar e tratado pelo patch_django_logo.py no template Django.
+"""
 import os
 
+# Apenas fix da cor do search input — o logo e tratado pelo patch_django_logo.py
 SCRIPT = """<script>
 (function(){
-  function brand(){
-    var b=document.querySelector(".navbar-brand");
-    if(b&&!b.querySelector(".docs-logo")){
-      var s=b.querySelector("svg");
-      if(s){
-        var i=document.createElement("img");
-        i.src="/static/custom/login_logo.png";
-        i.className="docs-logo";
-        i.style.cssText="height:28px;width:auto;margin-right:8px;vertical-align:middle";
-        s.parentNode.replaceChild(i,s);
-      }
-    }
+  function fixSearch(){
     document.querySelectorAll(".search-container input").forEach(function(el){
       el.style.setProperty("color","#e0e0e0","important");
     });
   }
   document.addEventListener("DOMContentLoaded",function(){
-    brand();setTimeout(brand,500);setTimeout(brand,1500);setTimeout(brand,3000);
-    new MutationObserver(brand).observe(document.body,{childList:true,subtree:true});
+    fixSearch();
+    setTimeout(fixSearch,1000);
+    new MutationObserver(fixSearch).observe(document.body,{childList:true,subtree:true});
   });
 })();
 </script>"""
 
 base = "/usr/src/paperless/static/frontend"
+if not os.path.exists(base):
+    # Tentar path src
+    base = "/usr/src/paperless/src/documents/static/frontend"
+
+patched = 0
 for lang in os.listdir(base):
     f = os.path.join(base, lang, "index.html")
     if os.path.exists(f):
         content = open(f).read()
-        if "docs-logo" not in content:
+        if "fixSearch" not in content:
             content = content.replace("</body>", SCRIPT + "</body>")
             open(f, "w").write(content)
-            print(f"Patched: {f}")
-print("Done")
+            patched += 1
+
+print(f"inject_branding: {patched} ficheiros patchados")
