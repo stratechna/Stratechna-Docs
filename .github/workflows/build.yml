@@ -1,4 +1,4 @@
-name: Build Stratechna Vault
+name: Build Stratechna Docs
 
 on:
   push:
@@ -9,7 +9,12 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: stratechna/stratechna-vault
+  # Nome definitivo
+  IMAGE_NAME: stratechna/stratechna-docs
+  # Nome antigo, publicado em paralelo durante a transicao.
+  # Remover assim que o autoupdate no CCX13 apontar para stratechna-docs
+  # e o package novo estiver marcado como publico.
+  IMAGE_NAME_LEGACY: stratechna/stratechna-vault
 
 jobs:
   build:
@@ -33,7 +38,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}
           tags: |
             type=raw,value=latest
             type=raw,value={{date 'YYYY.MM.DD'}}
