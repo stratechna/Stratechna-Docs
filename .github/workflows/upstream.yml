@@ -1,0 +1,33 @@
+name: Versão nova do Paperless
+
+# A imagem não se actualiza sozinha. Isto só avisa, com um issue, quando o
+# Paperless-ngx publica uma versão diferente da que está fixada no Dockerfile.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FIXADA=$(sed -nE 's/^ARG PAPERLESS_VERSION=([0-9.]+)$/\1/p' Dockerfile)
+          NOVA=$(gh release view --repo paperless-ngx/paperless-ngx --json tagName -q .tagName | sed 's/^v//')
+          echo "fixada: $FIXADA | upstream: $NOVA"
+          [ -n "$NOVA" ] && [ "$NOVA" != "$FIXADA" ] || exit 0
+          TITULO="Paperless-ngx $NOVA disponível (fixado em $FIXADA)"
+          [ "$(gh issue list --state open --search "in:title \"$TITULO\"" --json number -q length)" = "0" ] || exit 0
+          gh issue create --title "$TITULO" --body "Notas: https://github.com/paperless-ngx/paperless-ngx/releases/tag/v$NOVA
+
+          Para actualizar:
+          1. Mudar \`ARG PAPERLESS_VERSION\` no Dockerfile para \`$NOVA\` e fazer push.
+          2. O build falha se alguma troca do \`branding/aplicar.py\` deixar de encaixar; a verificação falha se o nome do upstream ficar visível. Nesse caso, ajustar os padrões — nunca copiar ficheiros inteiros do upstream.
+          3. Salto de versão maior ou menor (ex. 3.1 → 3.2): o autoupdate só segue a tag \`3.1\`, por isso os clientes não mudam sozinhos. Fazer backup, testar no tenant \`teste\` e mudar a tag nos compose."

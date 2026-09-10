@@ -1,9 +1,0 @@
-body{background-color:#111314!important;color:#E0E0E0!important}
-.form-accounts{background:#1a1d1f!important;border:1px solid #2A3A4A!important;border-radius:8px;padding:2rem}
-.form-control{background-color:#1a1d1f!important;border-color:#2A3A4A!important;color:#E0E0E0!important}
-.form-control:focus{border-color:#3D5163!important;box-shadow:0 0 0 .2rem rgba(61,81,99,.35)!important}
-.btn-primary{background-color:#3D5163!important;border-color:#3D5163!important;color:#fff!important}
-.btn-primary:hover{background-color:#2a3a47!important}
-.byline{color:#7B93A8!important}
-.form-control::placeholder{color:#7B93A8!important;opacity:1!important}
-a{color:#7B93A8!important}

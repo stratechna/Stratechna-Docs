@@ -1,0 +1,17 @@
+body{background-color:#111314 !important;color:#E0E0E0 !important}
+body{--pngx-primary:#880000;--pngx-primary-hover:#660000;--pngx-primary-active:#440000}
+.form-accounts{background:#1a1d1f !important;border:1px solid #3a0000 !important;border-radius:8px;padding:2rem}
+.form-control{background-color:#1a1d1f !important;border-color:#3a0000 !important;color:#E0E0E0 !important}
+.form-control:focus{border-color:#880000 !important;box-shadow:0 0 0 .2rem rgba(136,0,0,.35) !important}
+.btn.btn-primary{--bs-btn-bg:#880000;--bs-btn-border-color:#880000;--bs-btn-hover-bg:#660000;--bs-btn-hover-border-color:#660000;--bs-btn-active-bg:#440000;background-color:#880000 !important;border-color:#880000 !important;color:#fff !important}
+.btn-primary:hover{background-color:#660000 !important;border-color:#660000 !important}
+.byline{color:#aa2222 !important}
+.form-control::placeholder{color:#7B93A8 !important;opacity:1 !important}
+a{color:#aa2222 !important}
+a:hover{color:#660000 !important}
+.logo { display: block; margin: 0 auto 1rem auto; max-width: 280px; }
+
+img.logo { display: block !important; margin: 0 auto 0.5rem auto !important; max-width: 300px !important; width: 100% !important; }
+.form-accounts img { display: block !important; margin-left: auto !important; margin-right: auto !important; }
+
+.form-accounts { max-width: 420px !important; min-width: 380px !important; }

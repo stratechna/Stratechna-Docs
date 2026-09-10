@@ -1,20 +1,16 @@
 name: Build Stratechna Docs
 
+# Sem rebuild agendado: a versão do Paperless está fixa no Dockerfile e só muda
+# de propósito. O workflow upstream.yml abre um issue quando sai versão nova.
 on:
   push:
-    branches: [ main ]
-  schedule:
-    - cron: '0 6 * * 1'
+    branches: [main]
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io
-  # Nome definitivo
-  IMAGE_NAME: stratechna/stratechna-docs
-  # Nome antigo, publicado em paralelo durante a transicao.
-  # Remover assim que o autoupdate no CCX13 apontar para stratechna-docs
-  # e o package novo estiver marcado como publico.
-  IMAGE_NAME_LEGACY: stratechna/stratechna-vault
+  IMAGEM: ghcr.io/stratechna/stratechna-docs
+  # Nome antigo, ainda publicado em paralelo durante a transição
+  IMAGEM_LEGACY: ghcr.io/stratechna/stratechna-vault
 
 jobs:
   build:
@@ -22,33 +18,29 @@ jobs:
     permissions:
       contents: read
       packages: write
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Login ao GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Versão fixada do Paperless
+        id: v
+        run: |
+          V=$(sed -nE 's/^ARG PAPERLESS_VERSION=([0-9]+\.[0-9]+\.[0-9]+)$/\1/p' Dockerfile)
+          test -n "$V" || { echo "PAPERLESS_VERSION não encontrada no Dockerfile"; exit 1; }
+          echo "versao=$V" >> "$GITHUB_OUTPUT"
+          echo "minor=${V%.*}" >> "$GITHUB_OUTPUT"
 
-      - name: Extrair metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}
-          tags: |
-            type=raw,value=latest
-            type=raw,value={{date 'YYYY.MM.DD'}}
+      - name: Build (o aplicar.py falha se alguma troca deixar de encaixar)
+        run: docker build --pull -t docs:teste --label org.opencontainers.image.revision=${{ github.sha }} .
 
-      - name: Build e push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Verificar a marca na imagem construída
+        run: bash branding/verificar.sh docs:teste
+
+      - name: Publicar (só chega aqui se a verificação passou)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          for img in "$IMAGEM" "$IMAGEM_LEGACY"; do
+            for tag in ${{ steps.v.outputs.versao }} ${{ steps.v.outputs.minor }} latest; do
+              docker tag docs:teste "$img:$tag"
+              docker push -q "$img:$tag"
+            done
+          done
