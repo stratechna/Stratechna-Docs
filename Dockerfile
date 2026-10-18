@@ -26,3 +26,7 @@ COPY branding/ficheiros/ /usr/src/paperless/static/custom/
 # Trocas de texto por padrão, com mínimo de ocorrências; falha se não encaixarem
 COPY branding/aplicar.py /tmp/aplicar.py
 RUN python3 /tmp/aplicar.py && rm /tmp/aplicar.py
+
+# Entrada única pelo portal, por email (18-10-2026): definições do allauth que o Paperless não expõe no ambiente
+COPY branding/entrada_unica.py /tmp/entrada_unica.py
+RUN cat /tmp/entrada_unica.py >> /usr/src/paperless/src/paperless/settings/__init__.py && rm /tmp/entrada_unica.py
