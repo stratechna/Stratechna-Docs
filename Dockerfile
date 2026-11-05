@@ -30,3 +30,7 @@ RUN python3 /tmp/aplicar.py && rm /tmp/aplicar.py
 # Entrada única pelo portal, por email (18-10-2026): definições do allauth que o Paperless não expõe no ambiente
 COPY branding/entrada_unica.py /tmp/entrada_unica.py
 RUN cat /tmp/entrada_unica.py >> /usr/src/paperless/src/paperless/settings/__init__.py && rm /tmp/entrada_unica.py
+
+# Entrada com a palavra-passe da caixa de correio (05-11-2026, DP2): backend próprio + certificado do BDS
+COPY branding/stratechna_caixa.py /usr/src/paperless/src/paperless/stratechna_caixa.py
+COPY branding/bds-mail.crt /usr/src/paperless/src/paperless/bds-mail.crt

@@ -9,3 +9,8 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 ACCOUNT_LOGIN_METHODS = {"email", "username"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
+
+# ── Stratechna (05-11-2026): entrar com a palavra-passe da caixa de correio (DP2) ──────────────────────────────
+# Último backend da lista: só corre quando a palavra-passe do Docs não serve. Ver paperless/stratechna_caixa.py.
+if os.environ.get("PAPERLESS_ENTRADA_CAIXA", "1") != "0":
+    AUTHENTICATION_BACKENDS = [*AUTHENTICATION_BACKENDS, "paperless.stratechna_caixa.CaixaBackend"]
