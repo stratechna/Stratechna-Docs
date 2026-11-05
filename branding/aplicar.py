@@ -89,6 +89,14 @@ trocar(base, 'content="Paperless-ngx project and contributors"', 'content="Strat
 trocar(base, "</head>",
        "    <link href=\"{% static 'custom/stratechna_login.css' %}\" rel=\"stylesheet\">\n    </head>")
 
+# Entrada por email (05-11-2026, pedido do Vítor): o formulário pede «Email» e não «Nome de utilizador».
+# O allauth aceita os dois (ACCOUNT_LOGIN_METHODS em entrada_unica.py), por isso quem ainda escreva o nome
+# antigo continua a entrar; os utilizadores passaram a ter nome = email.
+login = TEMPLATES / "account/login.html"
+trocar(login, '{% translate "Username" as i18n_username %}', '{% translate "Email" as i18n_username %}')
+trocar(login, '<input type="text" name="login" id="inputUsername"',
+       '<input type="email" name="login" id="inputUsername" autocomplete="username email"')
+
 # Cabeçalho e título do admin do Django (o index_title vai pelas traduções)
 urls = SRC / "paperless/urls.py"
 trocar(urls, f'admin.site.site_header = "{UPSTREAM}"', f'admin.site.site_header = "{MARCA}"')
