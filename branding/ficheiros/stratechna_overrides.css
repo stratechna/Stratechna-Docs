@@ -136,7 +136,10 @@ nav.sidebar,
 .sidebar .nav-link.active {
   color: #fff !important;
   background-color: rgba(255, 255, 255, .11) !important;
-  box-shadow: inset 2px 0 0 #ea5c55;
+  box-shadow: inset 3px 0 0 #ea5c55 !important;
+  border: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
 .sidebar .nav-link.active svg { color: #fff !important; }
 .sidebar-heading,
