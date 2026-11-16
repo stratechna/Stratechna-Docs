@@ -35,6 +35,18 @@ jobs:
       - name: Verificar a marca na imagem construída
         run: bash branding/verificar.sh docs:teste
 
+      - name: Capturas da aplicação (claro e escuro)
+        if: always()
+        run: bash branding/capturas.sh docs:teste capturas || true
+
+      - name: Guardar as capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-docs
+          path: capturas/
+          if-no-files-found: ignore
+
       - name: Publicar (só chega aqui se a verificação passou)
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin

@@ -60,6 +60,17 @@ echo "== ficheiros próprios e favicon =="
 for f in custom/login_logo.png custom/stratechna_login.css custom/stratechna_overrides.css custom/favicon.png; do
   curl -fs -o /dev/null "$B/static/$f" && ok "/static/$f" || falha "/static/$f não é servido"
 done
+echo "== aspecto Stratechna: folhas e letra servidas pela própria imagem =="
+for f in custom/stratechna-fontes.css custom/fonts/dm-sans-latin-wght-normal.woff2 custom/fonts/dm-sans-latin-ext-wght-normal.woff2 custom/fonts/dm-sans-latin-wght-italic.woff2; do
+  C=$(curl -s -o /dev/null -w '%{http_code}' "$B/static/$f")
+  [ "$C" = 200 ] && ok "/static/$f (200)" || falha "/static/$f devolveu $C"
+done
+for f in custom/stratechna_overrides.css custom/stratechna_login.css; do
+  CSS=$(curl -fsS "$B/static/$f")
+  printf '%s' "$CSS" | grep -q 'stratechna-fontes.css' && ok "$f importa a letra" || falha "$f sem stratechna-fontes.css"
+  printf '%s' "$CSS" | grep -qi '#b20009' && ok "$f com o vermelho de acção" || falha "$f sem #b20009"
+  printf '%s' "$CSS" | grep -qiE 'googleapis|gstatic' && falha "$f pede letra ao Google" || ok "$f sem Google"
+done
 [ "$(curl -fs "$B/favicon.ico" | sha256sum | cut -c1-16)" = "$(sha256sum < "$DIR/ficheiros/favicon.ico" | cut -c1-16)" ] \
   && ok "favicon.ico é o nosso" || falha "favicon.ico não é o nosso"
 

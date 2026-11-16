@@ -1,54 +1,177 @@
-/* Stratechna Docs — cores e navbar da aplicação (carregado pelo index.html) */
+/* Stratechna Docs — aspecto Stratechna na aplicação (carregado pelo index.html).
+ *
+ * A regra do Orbit (docs/PLANO-ASPECTO-ORBIT-APPS.md §1):
+ *  - ARDÓSIA na estrutura: barra de topo e barra lateral #1a2a33; os cinzentos
+ *    do Bootstrap/Paperless passam a cinzentos-ardósia com a mesma luminosidade;
+ *  - VERMELHO #b20009 só no botão principal (.btn-primary). Por isso a cor
+ *    «primária» do Paperless (ligações, selecções, separadores) passa a ardósia:
+ *    se tudo for vermelho, nada é;
+ *  - cores de informação (sucesso, aviso, perigo) intactas;
+ *  - DM Sans, servida pela própria imagem (custom/fonts) — nada vai ao Google.
+ *
+ * Só se redefinem as fichas do Paperless (--pngx-*) e do Bootstrap (--bs-*);
+ * nenhum ficheiro do upstream é alterado. Se o utilizador escolher outra cor
+ * nas definições do Paperless, a escolha dele continua a valer (estilo inline).
+ */
+@import url("stratechna-fontes.css");
 
-/* Cores primarias */
 :root {
-  --pngx-primary: 0, 100%;
-  --pngx-primary-lightness: 27%;
+  /* Primária = ardósia #2c414e (hsl 203 28% 24%) */
+  --pngx-primary: 203, 28%;
+  --pngx-primary-lightness: 24%;
+
+  --stx-accao: #b20009;
+  --stx-accao-hover: #8c0007;
+  --stx-accao-activo: #730006;
+  --stx-estrutura: #1a2a33;
+  --stx-estrutura-2: #22343f;
+  --stx-estrutura-3: #2c414e;
+
+  --bs-font-sans-serif: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+
+  /* Cinzentos → ardósia (mesma luminosidade OKLab) */
+  --bs-gray-100: #f6f9fb;
+  --bs-gray-200: #e8ecef;
+  --bs-gray-300: #dee2e5;
+  --bs-gray-400: #ced4d8;
+  --bs-gray-500: #adb5ba;
+  --bs-gray-600: #69767e;
+  --bs-gray-700: #43525b;
+  --bs-gray-800: #2e3b43;
+  --bs-gray-900: #1a262e;
+  --bs-light-rgb: 246, 249, 251;
+  --bs-secondary-rgb: 105, 118, 126;
+  --pngx-bg-darker: #f3f6f8;
+  --pngx-bg-disabled: #f5f8fa;
 }
 
-/* Navbar */
-.navbar { background-color: #111314 !important; }
-.navbar *,
+/* Tema escuro: os fundos quase pretos passam a ardósia profunda. A primária
+ * sobe de luminosidade para se ler sobre o fundo escuro. */
+[data-bs-theme=dark] body:not(.primary-light):not(.primary-dark),
+[data-bs-theme=dark] {
+  --pngx-primary-lightness: 52%;
+  --stx-accao: #d4151f;
+  --stx-accao-hover: #b20009;
+  --stx-accao-activo: #8c0007;
+  --stx-estrutura: #121b21;
+  --pngx-bg-alt: #1b272f;
+  --pngx-bg-alt2: #19252c;
+  --pngx-bg-darker: #09151b;
+  --pngx-body-color-accent: #c7ced2;
+  --bs-body-bg: #0c181f;
+  --bs-body-bg-rgb: 12, 24, 31;
+  --bs-body-color: #abb3b8;
+  --bs-secondary-color: #69767e;
+  --bs-light: #121e25;
+  --bs-light-rgb: 18, 30, 37;
+  --bs-border-color: #2c3941;
+  --bs-secondary-bg-rgb: 27, 39, 47;
+  --bs-tertiary-bg: var(--pngx-bg-darker);
+}
+@media (prefers-color-scheme: dark) {
+  [data-bs-theme=auto] body:not(.primary-light):not(.primary-dark),
+  [data-bs-theme=auto] body {
+    --pngx-primary-lightness: 52%;
+    --stx-accao: #d4151f;
+    --stx-accao-hover: #b20009;
+    --stx-accao-activo: #8c0007;
+    --stx-estrutura: #121b21;
+    --pngx-bg-alt: #1b272f;
+    --pngx-bg-alt2: #19252c;
+    --pngx-bg-darker: #09151b;
+    --pngx-body-color-accent: #c7ced2;
+    --bs-body-bg: #0c181f;
+    --bs-body-bg-rgb: 12, 24, 31;
+    --bs-body-color: #abb3b8;
+    --bs-secondary-color: #69767e;
+    --bs-light: #121e25;
+    --bs-light-rgb: 18, 30, 37;
+    --bs-border-color: #2c3941;
+    --bs-secondary-bg-rgb: 27, 39, 47;
+    --bs-tertiary-bg: var(--pngx-bg-darker);
+  }
+}
+
+/* ── Letra ──────────────────────────────────────────────────────────────── */
+body, button, input, select, textarea, .tooltip, .popover, .dropdown-menu {
+  font-family: var(--bs-font-sans-serif);
+}
+body { -webkit-font-smoothing: antialiased; }
+
+/* ── Barra de topo em ardósia ───────────────────────────────────────────── */
+.navbar,
+.navbar.bg-primary { background-color: var(--stx-estrutura) !important; }
 .navbar-brand,
-.navbar a,
-.navbar button,
-.navbar span,
-.navbar .btn,
-.navbar .dropdown > .btn { color: #ffffff !important; }
+.navbar > .container-fluid > a,
+.navbar > .container-fluid > button,
+.navbar .navbar-nav > .nav-item > .nav-link,
+.navbar .dropdown > .btn,
+.navbar .dropdown > button,
+.navbar > .container-fluid .btn-link { color: #fff !important; }
 .navbar-brand svg { display: none !important; }
 
-/* Search input */
+/* Pesquisa global, sobre a ardósia */
 .search-container input,
-.search-container input:focus,
-.search-container ::placeholder,
-[data-bs-theme=dark] .search-container input,
-[data-bs-theme=dark] .search-container input:focus,
-[data-bs-theme=dark] .search-container ::placeholder {
-  color: #e0e0e0 !important;
-  -webkit-text-fill-color: #e0e0e0 !important;
+.search-container input:focus {
+  background-color: rgba(255, 255, 255, .08) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+  color: #e4e9ed !important;
+  -webkit-text-fill-color: #e4e9ed !important;
 }
+.search-container ::placeholder { color: #93a2af !important; -webkit-text-fill-color: #93a2af !important; }
+.search-container svg { color: #93a2af !important; fill: currentColor; }
 
-/* Ecrã de carregamento, sobre o fundo escuro */
+/* ── Barra lateral em ardósia, item activo com o traço vermelho ─────────── */
+nav.sidebar,
+.sidebar.bg-light,
+#sidebarMenu {
+  background-color: var(--stx-estrutura) !important;
+  border-right: 1px solid rgba(0, 0, 0, .2) !important;
+}
+.sidebar .nav-link,
+.sidebar .nav-link svg,
+.sidebar .nav-link i-bs { color: #cfd7de !important; }
+.sidebar .nav-link:hover { color: #fff !important; background-color: rgba(255, 255, 255, .07); }
+.sidebar .nav-link.active {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, .11) !important;
+  box-shadow: inset 2px 0 0 #ea5c55;
+}
+.sidebar .nav-link.active svg { color: #fff !important; }
+.sidebar-heading,
+.sidebar .sidebar-heading,
+.sidebar h6 { color: #7a8b99 !important; }
+.sidebar .badge { background-color: rgba(255, 255, 255, .14) !important; color: #e4e9ed !important; }
+.sidebar .text-muted,
+.sidebar .version,
+.sidebar .version a { color: #7a8b99 !important; }
+.sidebar .btn-link,
+.sidebar .sidebar-slim-toggler,
+.sidebar .sidebar-slim-toggler svg { color: #93a2af !important; }
+
+/* ── Ecrã de carregamento ───────────────────────────────────────────────── */
 .app-loader h6,
-.app-loader p { color: #e0e0e0 !important; }
+.app-loader p { color: #e4e9ed !important; }
 
-/* Cor primaria vermelha Stratechna */
-.btn-primary,
-.bg-primary,
-.page-item.active .page-link {
-  background-color: #880000 !important;
-  border-color: #880000 !important;
+/* ── O botão principal: o único vermelho ────────────────────────────────── */
+.btn-primary {
+  --bs-btn-bg: var(--stx-accao);
+  --bs-btn-border-color: var(--stx-accao);
+  --bs-btn-hover-bg: var(--stx-accao-hover);
+  --bs-btn-hover-border-color: var(--stx-accao-hover);
+  --bs-btn-active-bg: var(--stx-accao-activo);
+  --bs-btn-active-border-color: var(--stx-accao-activo);
+  --bs-btn-disabled-bg: var(--stx-accao);
+  --bs-btn-disabled-border-color: var(--stx-accao);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  background-color: var(--stx-accao) !important;
+  border-color: var(--stx-accao) !important;
+  color: #fff !important;
 }
-.text-primary,
-.btn-outline-primary,
-.nav-tabs .nav-link { color: #880000 !important; }
+.btn-primary:hover { background-color: var(--stx-accao-hover) !important; border-color: var(--stx-accao-hover) !important; }
+.btn-primary:active { background-color: var(--stx-accao-activo) !important; border-color: var(--stx-accao-activo) !important; }
 
-/* Alert primary */
-.alert-primary {
-  --bs-alert-bg: #4a0000 !important;
-  --bs-alert-border-color: #6b0000 !important;
-  --bs-alert-color: #ffffff !important;
-}
-
-/* Labels */
-label, .form-label, .col-form-label { color: #c8d0d8 !important; }
+::selection { background: rgba(178, 0, 9, .16); }
